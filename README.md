@@ -3,21 +3,21 @@
 #### 项目介绍
 就是论文。
 
-#### 软件架构
-软件架构说明
-
-
-#### 安装教程
-
-1. clone 到本地
-2. 在本地项目文件夹内> npm install
-3. > npm run-script serve //运行本地测试服务器
-
-#### 使用说明
+#### 说明
 
 1. 需要安装 nginx
 2. 需要同时运行另一个项目中的后台系统
 3. 可用的用户名包括 学生:21509081011~21509081013 教师：1,2 ；密码均为 123456
+
+#### 安装 & 使用
+> 默认您已经了解并完成了说明中标注的事项
+```shell
+git clone https://gitee.com/samchevia/paper.git
+cd paper
+npm install
+npm run-script serve
+```
+打开浏览器 localhost:81 即可使用
 
 #### 参与贡献
 
