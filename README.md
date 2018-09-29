@@ -9,15 +9,15 @@
 
 #### 安装教程
 
-1. xxxx
-2. xxxx
-3. xxxx
+1. clone 到本地
+2. 在本地项目文件夹内> npm install
+3. > npm run-script serve //运行本地测试服务器
 
 #### 使用说明
 
-1. xxxx
-2. xxxx
-3. xxxx
+1. 需要安装 nginx
+2. 需要同时运行另一个项目中的后台系统
+3. 可用的用户名包括 学生:21509081011~21509081013 教师：1,2 ；密码均为 123456
 
 #### 参与贡献
 
@@ -25,13 +25,3 @@
 2. 新建 Feat_xxx 分支
 3. 提交代码
 4. 新建 Pull Request
-
-
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
