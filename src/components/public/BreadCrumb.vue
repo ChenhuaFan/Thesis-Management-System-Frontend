@@ -1,5 +1,5 @@
 <template>
-    <Breadcrumb :style="{margin: '24px 0'}">
+    <!-- <Breadcrumb :style="{margin: '24px 0'}">
         <BreadcrumbItem to="/">
             <Icon type="ios-home-outline"></Icon> 论文注册系统
         </BreadcrumbItem>
@@ -9,7 +9,11 @@
         <BreadcrumbItem>
             <Icon type="ios-cafe"></Icon> {{ this.$store.getters.getMethod }}
         </BreadcrumbItem>
-    </Breadcrumb>
+    </Breadcrumb> -->
+    <Alert banner closable type="info" show-icon :style="{margin: '24px 0'}">
+        来自管理员的通知
+        <span slot="desc">第一轮论文申报已经开始,请各位老师同学抓紧时间。</span>
+    </Alert>
 </template>
 
 <script>

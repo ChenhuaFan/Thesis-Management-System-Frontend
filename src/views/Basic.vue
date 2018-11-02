@@ -19,6 +19,7 @@
                 </Sider>
                 <Layout :style="{padding: '0 24px 24px'}">
                     <my-breadcrumb></my-breadcrumb>
+                    <br>
                     <router-view></router-view>
                 </Layout>
             </Layout>
