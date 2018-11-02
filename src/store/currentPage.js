@@ -32,7 +32,34 @@ export default {
         }
       },
       'admin': {
-        'null': '我没想出来干嘛'
+        'stuMag': {
+          'name': '学生管理',
+          'icon': 'md-hammer'
+        },
+        'stuView': {
+          'name': '学生列表',
+          'icon': 'md-list'
+        },
+        'teaMag': {
+          'name': '教师管理',
+          'icon': 'md-hammer'
+        },
+        'teaView': {
+          'name': '教师列表',
+          'icon': 'md-list'
+        },
+        'ppMag': {
+          'name': '论文管理',
+          'icon': 'md-hammer'
+        },
+        'ppView': {
+          'name': '论文列表',
+          'icon': 'md-list'
+        },
+        'profile': {
+          'name': '我的账户',
+          'icon': 'md-contact'
+        }
       }
     },
     current: {

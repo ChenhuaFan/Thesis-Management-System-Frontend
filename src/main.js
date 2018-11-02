@@ -26,6 +26,7 @@ import MyNotification from '@/components/public/Notification.vue'
 import MyTimeLine from '@/components/public/MyTimeLine.vue'
 import Mask from '@/components/public/Mask.vue'
 import EnrollDetail from '@/components/public/EnrollDetail.vue'
+import GetRoot from '@/components/public/GetRoot.vue'
 Vue.component('my-nav', MyNav)
 Vue.component('user-bar', UserBar)
 Vue.component('my-breadcrumb', BreadCrumb)
@@ -36,6 +37,7 @@ Vue.component('my-notification', MyNotification)
 Vue.component('my-timeline', MyTimeLine)
 Vue.component('my-mask', Mask) //EnrollDetail
 Vue.component('enroll-detail', EnrollDetail)
+Vue.component('get-root', GetRoot)
 
 // 路由配置
 const RouterConfig = {
