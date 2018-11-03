@@ -51,6 +51,7 @@
     </div>
 </template>
 <script>
+    import { mapState } from 'vuex'
     export default {
         mounted: function () {
             const self = this
@@ -62,6 +63,9 @@
                     });
             })
         },
+        computed: mapState({
+            msg: state => state.global.msg
+        }),
         data () {
             return {
                 loginForm: {
@@ -81,8 +85,8 @@
                     role: [
                         { required: true, message: '您必须选择您的登录角色', trigger: 'blur'}
                     ]
-                },
-                msg: this.$store.getters.getMsg
+                }
+                // msg: this.$store.getters.getMsg
             }
         },
         methods: {
@@ -90,7 +94,7 @@
                 this.loginForm.btnEnable = true
                 this.$refs[name].validate(async (valid) => {
                     if (valid) {
-                        const res = await this.$store.dispatch('login', {
+                        const res = await this.$store.dispatch('global/login', {
                             id: this.loginForm.user,
                             pw: this.loginForm.password,
                             role: this.loginForm.role,
@@ -101,7 +105,7 @@
                                 this.$router.push('/'+this.loginForm.role)
                             }, 1000)
                         } else {
-                            this.$Message.error('登录失败：'+this.$store.getters.getMsg);
+                            this.$Message.error('登录失败：'+this.msg);
                         }
                     } else {
                         this.$Message.error('请检查您的账户名和密码。');

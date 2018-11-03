@@ -16,7 +16,8 @@ const state = {
 const getters = {
   getMethods: (state, role) => {
     return state[role]
-  }
+  },
+  getRole: (state) => {return state.user.role}
 }
 
 const mutations = {
@@ -49,6 +50,10 @@ const mutations = {
   // 设置管理员通知
   setNotify (state, msg) {
     state.notify = msg
+  },
+  // 设置当前路由方法
+  setMethod (state, method) {
+    state.method = method
   }
 }
 
@@ -73,6 +78,10 @@ const actions = {
       context.commit('setMsg', error.message)
     }
     return false
+  },
+  // 设置当前路由方法
+  setMethod (context, method) {
+    context.commit('setMethod', method)
   },
   // 更新 jwt
   async updateJwt(context, {role, jwt}) {
@@ -116,6 +125,14 @@ const actions = {
       context.commit('setMsg', error.message)
     }
     return false
+  },
+  // 设置全局警告信息
+  setMsg (context, msg) {
+    context.commit('setMsg', msg)
+  },
+  // 设置管理员通知
+  setNotify (context) {
+    context.commit('setNotify', "这里是测试哦，在路由加载时调用")
   }
 }
 
