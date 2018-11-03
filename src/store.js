@@ -3,17 +3,19 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-import current from './store/currentPage'
-import user from './store/user'
+import nav from './store/nav'
 import paper from './store/paper'
-import timeLine from './store/timeLine'
+import people from './store/people'
+import user from './store/user'
+import view from './store/view'
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   modules: {
-    current,
-    user,
+    nav,
     paper,
-    timeLine
+    people,
+    user,
+    view
   }
 })
