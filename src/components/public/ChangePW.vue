@@ -15,19 +15,21 @@
             </Input>
         </FormItem>
         <FormItem>
-            <Button type="primary" @click="handleSubmit('formInline')">更改密码</Button>
+            <Button type="primary" @click="handleSubmit('formInline')" :disabled="formInline.btnEnable">更改密码</Button>
         </FormItem>
     </Form>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
         formInline: {
             pw: '',
-            repw: ''
+            repw: '',
+            btnEnable: false
         },
         repwRule: {
             pw: [
@@ -41,15 +43,36 @@ export default {
         }
     }
 },
+computed: mapState({
+    id: state => state.global.user.id,
+    role: state => state.global.user.role
+}),
 methods: {
     handleSubmit(name) {
-        this.$refs[name].validate((valid) => {
+        this.formInline.btnEnable = true
+        this.$refs[name].validate(async (valid) => {
             if (valid && this.formInline.pw == this.formInline.repw) {
-                this.$Message.success('Success!');
+                console.log({
+                    id: this.id,
+                    pw: this.formInline.repw,
+                    role: this.role,
+                })
+                const res = await this.$store.dispatch('global/updatePW', {
+                    id: this.id,
+                    pw: this.formInline.repw,
+                    role: this.role,
+                })
+                if (res) {
+                    this.$Message.success('更改成功，请重新登录。')
+                    this.$router.push('/login')
+                } else {
+                    this.$Message.error('更新失败'+this.msg);
+                }
             } else {
-                this.$Message.error('密码不一致');
+                this.$Message.error('两次密码不相同');
             }
         })
+        this.formInline.btnEnable = false
     }
 }
 }

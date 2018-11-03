@@ -64,8 +64,6 @@ router.beforeEach(async (to, from, next) => {
   const url = to.fullPath.split('/')
   const urlRole = url[1]
   const urlMethod = url[2]
-  // set store
-  const global = store.state.global
   // 访问 login 不做任何判断
   if (to.name === 'login') {
     next()
@@ -78,18 +76,11 @@ router.beforeEach(async (to, from, next) => {
     return
   }
   // jwt 是否更新成功 ? 已登录 : 未登录
-  const res = await store.dispatch('global/updateJwt', {role: global.user.role, jwt})
+  const res = await store.dispatch('global/updateJwt', {role: urlRole, jwt})
   if (!res) {
     // 更新失败: jwt 过期，未登录情况(2)
-    next('login')
-    return
-  }
-  // 更新成功，检查请求的目标页行为是否合法
-  if(global.user.role !== urlRole) {
-    alert(global.user.role + " " + urlRole)
-    // 转跳到登录页 并发送错误信息
-    next('login') //'您的操作不合法'
     store.dispatch('global/setMsg', '您的操作不合法')
+    next('login')
     return
   }
   // 所有操作合法 设置当前的用户动作 并重置错误信息
