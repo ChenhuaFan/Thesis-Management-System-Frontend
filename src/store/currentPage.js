@@ -1,3 +1,6 @@
+/* eslint-disable */
+const Base64 = require('js-base64').Base64
+import http from '../util/http'
 /*
   state 的定义：
     不相信任何前端存储的 jwt 中解析出来的用户信息，一切以服务器返回的 jwt 为准。
@@ -6,92 +9,126 @@
 */
 export default {
   state: {
-    allMethods: {
-      'student': {
-        'check': {
-          'name': '所有论文',
-          'icon': 'md-list'
-        },
-        'paper': {
-          'name': '我申请的论文',
-          'icon': 'md-paper'
-        },
-        'profile': {
-          'name': '我的账户',
-          'icon': 'md-contact'
-        }
-      },
-      'teacher': {
-        'paper': {
-          'name': '我发布的论文',
-          'icon': 'md-paper'
-        },
-        'profile': {
-          'name': '我的账户',
-          'icon': 'md-contact'
-        }
-      },
-      'admin': {
-        'stuMag': {
-          'name': '学生管理',
-          'icon': 'md-hammer'
-        },
-        'stuView': {
-          'name': '学生列表',
-          'icon': 'md-list'
-        },
-        'teaMag': {
-          'name': '教师管理',
-          'icon': 'md-hammer'
-        },
-        'teaView': {
-          'name': '教师列表',
-          'icon': 'md-list'
-        },
-        'ppMag': {
-          'name': '论文管理',
-          'icon': 'md-hammer'
-        },
-        'ppView': {
-          'name': '论文列表',
-          'icon': 'md-list'
-        },
-        'notify': {
-          'name': '通知管理',
-          'icon': 'md-notifications'
-        },
-        'profile': {
-          'name': '我的账户',
-          'icon': 'md-contact'
-        }
-      }
-    },
-    current: {
-      'role': '',
-      'method': '',
-      'msg': ''
-    }
+    jwt: '',
+    info: {},
+    enrollPaperId: -1, 
   },
   getters: {
-    getMethods: (state) => {
-      return state.allMethods[state.current.role]
-    },
-    getMethod: (state) => {
-      return state.current.method
-    },
-    getMsg: (state) => {
-      return state.current.msg
-    }
+    getJwt: state=>{return state.jwt},
+    getName: state=>{return state.info.name},
+    getId: state=>{return state.info.id},
+    getRole: state=>{return state.info.role},
+    getPw: state=>{return state.info.pw},
+    getEnrollPaperId: state=>{return state.enrollPaperId},
   },
   mutations: {
-    setCurrent (state, current) {
-      state.current.method = current
+    root(state) {
+      state.info
     },
-    syncRole (state, role) {
-      state.current.role = role
+    // 设置 jwt
+    setJwt(state, { jwt, info }) {
+      // alert('i do')
+      state.jwt = jwt
+      // alert(info)
+      state.info = info
+      // alert(state.info)
     },
-    setMsg (state, msg) {
-      state.current.msg = msg
+    setEnrollPaperId (state, id) {
+      state.enrollPaperId = id
+    }
+  },
+  actions: {
+    reset (context) {
+      context.commit('setJwt', {jwt: '', info: {}})
+      context.commit('setEnrollPaperId', -1)
+    },
+    setUser (context, jwt) {
+      // 保存 jwt 到 sessionStorage 中。
+      window.sessionStorage['jwt'] = jwt
+      // 解析 jwt 并将 payload 部分存入 state
+      const info = JSON.parse(Base64.decode(jwt.split('.')[1]))
+      context.commit('setJwt', { jwt, info })
+      context.commit('syncRole', info.role)
+    },
+    async updateJwt(context, jwt) {
+      try {
+        const info = JSON.parse(Base64.decode(jwt.split('.')[1]))
+        let res = await http.post({
+          url: 'http://localhost:81/api/'+info.role+'/update',
+          header: {
+            'Accept': 'application/json',
+            'jwt': jwt
+          }
+        })
+        if (res.status) {
+          context.dispatch('setUser', res.token)
+          return true
+        } else {
+          context.commit('setMsg', res.body)
+        }
+      } catch (error) {
+        context.commit('setMsg', error.message)
+      }
+      return false
+    },
+    async login(context, formInput) {
+      try {
+        let res = await http.post({
+          url: 'http://localhost:81/api/'+formInput.role+'/login',
+          body: {
+            id: formInput.id,
+            pw: formInput.pw
+          }
+        })
+        if (res.status) {
+          context.dispatch('setUser', res.token)
+          return true
+        } else {
+          context.commit('setMsg', res.body)
+        }
+      } catch (error) {
+        context.commit('setMsg', error.message)
+      }
+      return false
+    },
+    async getEnrollPaperId (context) {
+      // localhost:3000/enroll/get?stuId=21509081010
+      let paperId = await http.get({
+        url: 'http://localhost:81/api/enroll/get',
+        query: {
+          stuId: context.getters.getId
+        },
+        header: {
+          'Accept': 'application/json',
+          'jwt': context.getters.getJwt
+        }
+      })
+      if(paperId.status) {
+        context.commit('setEnrollPaperId', paperId.body[0].paperId);
+      } else {
+        context.commit('setEnrollPaperId', -1);
+      }
+    },
+    // 更新密码，也要根据角色来分
+    async updatePW (context) {
+      try {
+        let res = await http.post({
+          url: 'http://localhost:81/api/'+formInput.role+'/changePW',
+          body: {
+            id: formInput.id,
+            pw: formInput.pw
+          }
+        })
+        if (res.status) {
+          context.dispatch('setUser', res.token)
+          return true
+        } else {
+          context.commit('setMsg', res.body)
+        }
+      } catch (error) {
+        context.commit('setMsg', error.message)
+      }
+      return false
     }
   }
 }
