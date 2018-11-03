@@ -45,19 +45,16 @@ export default {
 },
 computed: mapState({
     id: state => state.global.user.id,
-    role: state => state.global.user.role
+    role: state => state.global.user.role,
+    jwt: state => state.global.jwt
 }),
 methods: {
     handleSubmit(name) {
         this.formInline.btnEnable = true
         this.$refs[name].validate(async (valid) => {
             if (valid && this.formInline.pw == this.formInline.repw) {
-                console.log({
-                    id: this.id,
-                    pw: this.formInline.repw,
-                    role: this.role,
-                })
                 const res = await this.$store.dispatch('global/updatePW', {
+                    jwt: this.jwt,
                     id: this.id,
                     pw: this.formInline.repw,
                     role: this.role,

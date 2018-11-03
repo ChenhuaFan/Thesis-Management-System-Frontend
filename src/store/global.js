@@ -109,14 +109,19 @@ const actions = {
     context.commit('resetAll')
   },
   // 更新密码
-  async updatePW (context, {role, id, pw}) {
+  async updatePW (context, {jwt, role, id, pw}) {
     try {
       let res = await http.post({
         url: 'http://localhost:81/api/'+role+'/changePW',
-        body: {id, pw}
+        body: {id, pw},
+        header: {
+          'Accept': 'application/json',
+          jwt
+        }
       })
+      console.log(res)
       if (res.status) {
-        context.commit('setUser', res.token)
+        context.commit('resetAll')
         return true
       } else {
         context.commit('setMsg', res.body)
