@@ -6,6 +6,7 @@ import ppView from '../components/Admin/paperView.vue'
 import teaMag from '../components/Admin/teaManage.vue'
 import teaView from '../components/Admin/teaView.vue'
 import profile from '../components/Admin/profile.vue'
+import notify from '../components/Admin/notify.vue'
 
 import basic from '../views/Basic.vue'
 
@@ -41,6 +42,10 @@ const admin = {
     {
       path: 'ppView',
       component: ppView
+    },
+    {
+      path: 'notify',
+      component: notify
     },
     {
       path: 'profile',

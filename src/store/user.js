@@ -25,6 +25,7 @@ export default {
     root(state) {
       state.info
     },
+    // 设置 jwt
     setJwt(state, { jwt, info }) {
       // alert('i do')
       state.jwt = jwt
@@ -107,6 +108,27 @@ export default {
       } else {
         context.commit('setEnrollPaperId', -1);
       }
+    },
+    // 更新密码，也要根据角色来分
+    async updatePW (context) {
+      try {
+        let res = await http.post({
+          url: 'http://localhost:81/api/'+formInput.role+'/changePW',
+          body: {
+            id: formInput.id,
+            pw: formInput.pw
+          }
+        })
+        if (res.status) {
+          context.dispatch('setUser', res.token)
+          return true
+        } else {
+          context.commit('setMsg', res.body)
+        }
+      } catch (error) {
+        context.commit('setMsg', error.message)
+      }
+      return false
     }
   }
 }

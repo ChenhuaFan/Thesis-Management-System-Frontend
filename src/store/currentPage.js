@@ -56,6 +56,10 @@ export default {
           'name': '论文列表',
           'icon': 'md-list'
         },
+        'notify': {
+          'name': '通知管理',
+          'icon': 'md-notifications'
+        },
         'profile': {
           'name': '我的账户',
           'icon': 'md-contact'
