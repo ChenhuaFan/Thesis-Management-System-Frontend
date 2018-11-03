@@ -4,18 +4,18 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 import nav from './store/nav'
-import paper from './store/paper'
-import people from './store/people'
-import user from './store/user'
-import view from './store/view'
+import global from './store/global'
+import student from './store/student'
+import teacher from './store/teacher'
+import admin from './store/admin'
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   modules: {
     nav,
-    paper,
-    people,
-    user,
-    view
+    global,
+    student,
+    teacher,
+    admin
   }
 })
