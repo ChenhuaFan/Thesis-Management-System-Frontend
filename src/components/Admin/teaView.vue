@@ -8,9 +8,9 @@
       <h2>教师表</h2>
       <p>在此查看数据库中的教师信息并对其修改</p>
       <Divider />
-      <Table border stripe :columns="papers.cols" :data="this.$store.getters.getPaperList"></Table>
+      <Table border stripe :columns="papers.cols" :data="teaList"></Table>
       <div style="text-align: center; padding: 24px;">
-        <Page :total="this.$store.getters.getPage.total" show-elevator show-sizer @on-page-size-change="setPageSize" @on-change="getPapersTable"></Page>
+        <Page :total="count" show-elevator show-sizer @on-page-size-change="setPageSize" @on-change="getPapersTable"></Page>
       </div>
       <Drawer title="教师详情" :closable="true" width="640" v-model="isShow">
           <enroll-detail></enroll-detail>
@@ -20,7 +20,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
+    beforeRouteEnter (to, from, next) {
+        next(vm => {
+            vm.$store.dispatch('admin/getAllTeacher', {jwt: vm.jwt, n: vm.n, p: vm.p})
+        })
+    },
   data () {
     return {
         isShow: false,
@@ -72,19 +78,26 @@ export default {
         },
     }
   },
+  computed: mapState({
+    teaList: state => state.admin.teaList,
+    n: state => state.admin.n,
+    p: state => state.admin.p,
+    count: state => state.admin.count,
+    jwt: state => state.global.jwt
+  }),
   methods: {
     setPageSize(n) {
-        this.$store.commit('setPaperN', n);
-        this.$store.dispatch('getAllPapersOfStudent');
+        this.$store.dispatch('admin/setPaperN', n);
+        this.$store.dispatch('admin/getAllTeacher', {jwt: this.jwt, n: this.n, p: this.p});
     },
     getPapersTable(p) {
-        this.$store.commit('setPaperP', p);
-        this.$store.dispatch('getAllPapersOfStudent');
-    },
-    showDrawer (index) {
-        this.$store.commit('setCurrentPaper', this.$store.getters.getPaperList[index])
-        this.isShow = true
+        this.$store.dispatch('admin/setPaperP', p);
+        this.$store.dispatch('admin/getAllTeacher', {jwt: this.jwt, n: this.n, p: this.p});
     }
+    // showDrawer (index) {
+    //     this.$store.dispatch('setCurrentPaper', this.$store.getters.getPaperList[index])
+    //     this.isShow = true
+    // }
   }
 }
 </script>

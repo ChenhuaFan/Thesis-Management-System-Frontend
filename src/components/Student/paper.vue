@@ -79,7 +79,6 @@ export default {
   methods: {
     async cancel () {
       const res = await this.$store.dispatch('student/cancel', {jwt: this.jwt, id: this.curPaper.id})
-      console.log(res)
       if(res) {
         this.$store.dispatch('student/getStudentPaper', {jwt: this.jwt, stuId: this.id})
         this.$Notice.success({
