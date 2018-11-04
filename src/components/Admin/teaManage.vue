@@ -25,7 +25,12 @@
       <Upload
         :multiple=false
         type="drag"
-        action="//jsonplaceholder.typicode.com/posts/">
+        :format="['xls','xlsx']"
+        action="/api/teacher/import"
+        name="excel"
+        :show-upload-list="false"
+        :headers="{'Accept': 'application/json', 'jwt': jwt}"
+        :on-success="uploadRecall">
         <div style="padding: 20px 0">
             <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
             <p>点击 或 拖动文件到此来上传</p>
@@ -48,7 +53,24 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
-  
+  computed: mapState({
+    jwt: state => state.global.jwt
+  }),
+  methods: {
+    uploadRecall(response) {
+      if (response.status)
+        this.$Notice.success({
+          title: '导入成功',
+          duration: 5
+        });
+      else
+        this.$Notice.error({
+            title: '导入失败，与数据库冲突',
+            duration: 5
+        });
+    }
+  }
 }
 </script>

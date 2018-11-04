@@ -28,9 +28,17 @@ export default {
   },
   computed: mapState({
       method: state => state.global.method,
-      role: state => state.global.user.role,
+      role (state) {
+        if (state.global.user.role == 'root')
+          return 'admin'
+        else
+          return state.global.user.role
+      },
       methods (state) {
-        return state.nav[this.role]
+        if (this.role == 'root')
+          return state.nav['admin']
+        else
+          return state.nav[this.role]
       }
   }),
   methods: {

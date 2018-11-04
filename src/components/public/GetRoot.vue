@@ -9,8 +9,8 @@
       <Divider />
       <Form ref="rootForm" :model="rootForm" :rules="ruleInline" inline>
         <FormItem prop="pw">
-            <Input type="text" v-model="rootForm.pw" placeholder="再输入一次管理员密码">
-                <Icon type="ios-person-outline" slot="prepend"></Icon>
+            <Input type="password" v-model="rootForm.pw" placeholder="再输入一次管理员密码">
+                <Icon type="md-lock" slot="prepend"></Icon>
             </Input>
         </FormItem>
         <FormItem>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -35,13 +36,27 @@ export default {
         }
     }
   },
+  computed: mapState({
+    jwt: state => state.global.jwt,
+    msg: state => state.global.msg
+  }),
   methods: {
-      handleSubmit(name) {
-          this.$refs[name].validate((valid) => {
+        handleSubmit(name) {
+          this.$refs[name].validate(async (valid) => {
               if (valid) {
-                  this.$Message.success('Success!');
+                    const res = await this.$store.dispatch('admin/getRoot', {jwt: this.jwt, pw: this.rootForm.pw})
+                    if (res)
+                        this.$Notice.success({
+                            title: this.msg,
+                            duration: 5
+                        });
+                    else
+                        this.$Notice.error({
+                            title: this.msg,
+                            duration: 5
+                        });
               } else {
-                  this.$Message.error('Fail!');
+                  this.$Message.error('失败，请注意是否满足填写要求？');
               }
           })
       }

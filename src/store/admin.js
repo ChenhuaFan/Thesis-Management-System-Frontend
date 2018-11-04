@@ -166,23 +166,28 @@ const actions = {
       return false
     }
   },
-  // async getExportFile(context, {jwt}) {
-  //   let res = await http.get({
-  //     url: 'http://localhost:81/api/paper/export',
-  //     header: {
-  //       'Accept': 'application/vnd.ms-excel',
-  //       jwt
-  //     }
-  //   })
-  //   if (res) {
-  //     context.commit('global/setMsg', '创建文件中，稍后自动下载。', {root: true})
-  //     return true
-  //   }
-  //   else {
-  //     context.commit('global/setMsg', '下载失败!', {root: true})
-  //     return false
-  //   }
-  // }
+  async getRoot (context, {jwt, pw}) {
+    let res = await http.post({
+      url: 'http://localhost:81/api/admin/root',
+      body: {
+        pw
+      },
+      header: {
+        'Accept': 'application/json',
+        jwt
+      }
+    })
+    if (res.status) {
+      console.log(res)
+      context.commit('global/setUser', res.token, {root: true})
+      context.commit('global/setMsg', '变更成功', {root: true})
+      return true
+    }
+    else {
+      context.commit('global/setMsg', '失败'+res.body, {root: true})
+      return false
+    }
+  }
 }
 
 export default {
