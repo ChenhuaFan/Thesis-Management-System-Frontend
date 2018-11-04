@@ -36,7 +36,7 @@
         </MenuItem>
         <MenuItem name="2">
             <Icon type="md-person"></Icon>
-            您好，{{ this.$store.getters.getName }}
+            您好，{{ name }}
         </MenuItem>
     </div>
     <Modal
@@ -50,12 +50,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
     data() {
         return {
             isShow: false
         }
     },
+    computed: mapState({
+        name: state => state.global.user.name
+    }),
     methods: {
         show(name) {
             if (name == 'help')

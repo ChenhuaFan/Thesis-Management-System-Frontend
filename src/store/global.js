@@ -7,7 +7,8 @@ const state = {
   'user': {
     'id': '',
     'name': '',
-    'role': ''
+    'role': '',
+    'type': ''
   },
   'method': '',
   'notify': ''
@@ -29,7 +30,8 @@ const mutations = {
     state.user = {
       'id': '',
       'name': '',
-      'role': ''
+      'role': '',
+      'type': ''
     }
     state.method = ''
     state.notify = ''

@@ -28,11 +28,6 @@
 </template>
 <script>
     export default {
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                // todo: 此处需要修改应该是 actions 获取数据。
-                vm.$store.dispatch('getPaperOfStudent')
-            })
-        },
+
     }
 </script>

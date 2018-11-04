@@ -1,8 +1,8 @@
 <template>
   <div class="timeline">
-      <my-mask v-if="show"></my-mask>
-      <Timeline pending v-if="!show">
-        <TimelineItem :color="value.type" v-for="(value, key, index) in this.$store.getters.getTimeLine" v-bind:key="index">
+      <my-mask v-if="isShow"></my-mask>
+      <Timeline pending v-if="!isShow">
+        <TimelineItem :color="value.type" v-for="(value, key, index) in this.timeLine" v-bind:key="index">
           <p class="time"><Time :time="value.time" /></p>
           <p class="content">{{ value.content }}</p>
         </TimelineItem>
@@ -11,17 +11,26 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
+  // beforeRouteEnter (to, from, next) {
+  //   next(vm => {
+  //     // vm.$store.dispatch('student/getTimeLine', {jwt: vm.jwt, stuId: vm.id})
+  //   })
+  // },
   data () {
     return {
       
     }
   },
-  computed: {
-    show () {
-      return (this.$store.getters.getTimeLine.length == 0)
+  computed: mapState({
+    timeLine: state => state.student.timeLine,
+    jwt: state => state.global.jwt,
+    id: state => state.global.user.id,
+    isShow() {
+      return this.timeLine.length == 0
     }
-  }
+  })
 }
 </script>
 
