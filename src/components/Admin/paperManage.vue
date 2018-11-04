@@ -47,7 +47,7 @@
           点击此按钮后，您的操作将不可逆。请务必小心！
         </template>
       </Alert>
-      <Button type="error" long large>清空</Button>
+      <Button type="error" long large @click="truncate()">清空</Button>
     </Card>
   </div>
 </template>
@@ -56,7 +56,8 @@
 import { mapState } from 'vuex'
 export default {
   computed: mapState({
-    jwt: state => state.global.jwt
+    jwt: state => state.global.jwt,
+    msg: state => state.global.msg
   }),
   methods: {
     uploadRecall(response) {
@@ -68,6 +69,19 @@ export default {
       else
         this.$Notice.error({
             title: '导入失败，与数据库冲突',
+            duration: 5
+        });
+    },
+    async truncate () {
+      const res = await this.$store.dispatch('global/truncate', {jwt: this.jwt, role: 'paper'})
+      if (res)
+        this.$Notice.success({
+          title: this.msg,
+          duration: 5
+        });
+      else
+        this.$Notice.error({
+            title: this.msg,
             duration: 5
         });
     }

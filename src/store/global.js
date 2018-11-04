@@ -140,6 +140,23 @@ const actions = {
   // 设置管理员通知
   setNotify (context) {
     context.commit('setNotify', "这里是测试哦，在路由加载时调用")
+  },
+  async truncate (context, {jwt, role}) {
+    let res = await http.get({
+      url: 'http://localhost:81/api/'+role+'/truncate',
+      header: {
+        'Accept': 'application/json',
+        jwt
+      }
+    })
+    if (res.status) {
+      context.commit('setMsg', '清空成功')
+      return true
+    }
+    else {
+      context.commit('setMsg', '失败'+res.body)
+      return false
+    }
   }
 }
 
