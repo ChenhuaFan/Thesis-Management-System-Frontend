@@ -51,8 +51,8 @@ const state = {
       'icon': 'md-list'
     },
     'notify': {
-      'name': '通知管理',
-      'icon': 'md-notifications'
+      'name': '通知 & 服务控制',
+      'icon': 'md-cog'
     },
     'profile': {
       'name': '我的账户',
