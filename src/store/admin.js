@@ -44,6 +44,9 @@ const mutations = {
   setPaperList (state, list) {
     state.ppList = list
   },
+  setCurPaper (state, paper) {
+    state.curPaper = paper
+  },
   // export
   setExportN (state, n) {
     state.export.n = n
@@ -72,6 +75,9 @@ const actions = {
   },
   setExportP (context, p) {
     context.commit('setExportP', p)
+  },
+  setCurPaper (context, paper) {
+    context.commit('setCurPaper', paper)
   },
   // API
   async getAllStudent (context, {jwt, n, p}) {
@@ -181,6 +187,27 @@ const actions = {
       console.log(res)
       context.commit('global/setUser', res.token, {root: true})
       context.commit('global/setMsg', '变更成功', {root: true})
+      return true
+    }
+    else {
+      context.commit('global/setMsg', '失败'+res.body, {root: true})
+      return false
+    }
+  },
+  async updatePaper (context, {jwt, id, title}) {
+    let res = await http.post({
+      url: '/api/paper/update',
+      body: {
+        id,
+        title
+      },
+      header: {
+        'Accept': 'application/json',
+        jwt
+      }
+    })
+    if (res.status) {
+      context.commit('global/setMsg', '更新成功', {root: true})
       return true
     }
     else {

@@ -48,32 +48,32 @@ export default {
                     title: '联系方式',
                     key: 'contact',
                     width: 150,
-                },
-                {
-                    title: '操作',
-                    key: 'action',
-                    minWidth: 100,
-                    align: 'center',
-                    fixed: 'right',
-                    render: (h, params) => {
-                        return h('div', [
-                            h('Button', {
-                                props: {
-                                    type: 'primary',
-                                    size: 'small',
-                                    shape: 'circle',
-                                    icon: 'md-eye'
-                                },
-                                on: {
-                                    click: () => {
-                                        // this.enroll(params.row.id);
-                                        this.showDrawer(params.row._index)
-                                    }
-                                }
-                            }, '查看')
-                        ]);
-                    }
                 }
+                // {
+                //     title: '操作',
+                //     key: 'action',
+                //     minWidth: 100,
+                //     align: 'center',
+                //     fixed: 'right',
+                //     render: (h, params) => {
+                //         return h('div', [
+                //             h('Button', {
+                //                 props: {
+                //                     type: 'primary',
+                //                     size: 'small',
+                //                     shape: 'circle',
+                //                     icon: 'md-eye'
+                //                 },
+                //                 on: {
+                //                     click: () => {
+                //                         // this.enroll(params.row.id);
+                //                         this.showDrawer(params.row._index)
+                //                     }
+                //                 }
+                //             }, '查看')
+                //         ]);
+                //     }
+                // }
             ]
         },
     }

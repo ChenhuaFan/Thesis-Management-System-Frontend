@@ -12,8 +12,15 @@
       <div style="text-align: center; padding: 24px;">
         <Page :total="count" show-elevator show-sizer @on-page-size-change="setPageSize" @on-change="getPapersTable"></Page>
       </div>
-      <Drawer title="论文详情" :closable="true" width="640" v-model="isShow">
-          <enroll-detail></enroll-detail>
+      <Drawer title="修改论文信息" :closable="isShow" width="640" v-model="isShow">
+          <Form :model="formItem" :label-width="80">
+            <FormItem label="标题">
+                <Input v-model="formItem.title" placeholder="论文标题"></Input>
+            </FormItem>
+            <FormItem>
+                <Button type="primary" @click="update">提交</Button>
+            </FormItem>
+        </Form>
       </Drawer>
     </Card>
     <br>
@@ -42,9 +49,10 @@ export default {
   data () {
     return {
         isShow: false,
+        formItem: {
+            title: ''
+        },
         papers: {
-            counts: 1526,
-            n: 10,
             cols: [
                 {
                     title: "论文索引",
@@ -94,7 +102,7 @@ export default {
                                 on: {
                                     click: () => {
                                         // this.enroll(params.row.id);
-                                        this.showDrawer(params.row._index)
+                                        this.showDrawer(params.index)
                                     }
                                 }
                             }, '查看')
@@ -125,26 +133,13 @@ export default {
                   key: 'teacher',
                   width: 150,
               }
-          ],
-          data: [
-            {
-              'id': '21509081010',
-              'name': '范宸华',
-              'title': '卷积神经网络和人脸识别',
-              'teacher': '何川'
-            },
-            {
-              'id': '...',
-              'name': '...',
-              'title': '...',
-              'teacher': '...'
-            }
           ]
         }
     }
   },
   computed: mapState({
     ppList: state => state.admin.ppList,
+    curPaper: state => state.admin.curPaper,
     n: state => state.admin.n,
     p: state => state.admin.p,
     count: state => state.admin.count,
@@ -152,7 +147,8 @@ export default {
     exN: state => state.admin.export.n,
     exP: state => state.admin.export.p,
     exCount: state => state.admin.export.count,
-    jwt: state => state.global.jwt
+    jwt: state => state.global.jwt,
+    msg: state => state.global.msg
   }),
   methods: {
     setPageSize(n) {
@@ -173,6 +169,27 @@ export default {
     },
     async getFile() {
         window.location.href='/api/paper/export?jwt='+this.jwt
+    },
+    showDrawer (index) {
+        this.$store.dispatch('admin/setCurPaper', this.ppList[index])
+        this.isShow = true
+        this.formItem.title = this.curPaper.title
+    },
+    async update () {
+        if (await this.$store.dispatch('admin/updatePaper', {jwt: this.jwt, id: this.curPaper.id, title: this.formItem.title})) {
+            this.isShow = false
+            this.$store.dispatch('admin/getAllPaper', {jwt: this.jwt, n: this.n, p: this.p})
+            this.$store.dispatch('admin/getExportPaperList', {jwt: this.jwt, n: this.exN, p: this.exP})
+            this.$Notice.success({
+                title: this.msg,
+                duration: 5
+            });
+        } else {
+            this.$Notice.error({
+                title: this.msg,
+                duration: 5
+            });
+        }
     }
     // showDrawer (index) {
     //     this.$store.commit('setCurrentPaper', this.$store.getters.getPaperList[index])
