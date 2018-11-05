@@ -54,7 +54,7 @@ export default {
       try {
         const info = JSON.parse(Base64.decode(jwt.split('.')[1]))
         let res = await http.post({
-          url: 'http://localhost:81/api/'+info.role+'/update',
+          url: '/api/'+info.role+'/update',
           header: {
             'Accept': 'application/json',
             'jwt': jwt
@@ -74,7 +74,7 @@ export default {
     async login(context, formInput) {
       try {
         let res = await http.post({
-          url: 'http://localhost:81/api/'+formInput.role+'/login',
+          url: '/api/'+formInput.role+'/login',
           body: {
             id: formInput.id,
             pw: formInput.pw
@@ -94,7 +94,7 @@ export default {
     async getEnrollPaperId (context) {
       // localhost:3000/enroll/get?stuId=21509081010
       let paperId = await http.get({
-        url: 'http://localhost:81/api/enroll/get',
+        url: '/api/enroll/get',
         query: {
           stuId: context.getters.getId
         },
@@ -113,7 +113,7 @@ export default {
     async updatePW (context) {
       try {
         let res = await http.post({
-          url: 'http://localhost:81/api/'+formInput.role+'/changePW',
+          url: '/api/'+formInput.role+'/changePW',
           body: {
             id: formInput.id,
             pw: formInput.pw

@@ -76,7 +76,7 @@ const actions = {
   // API
   async getAllStudent (context, {jwt, n, p}) {
     let res = await http.get({
-      url: 'http://localhost:81/api/student/get',
+      url: '/api/student/get',
       query: {
         n,
         p
@@ -99,7 +99,7 @@ const actions = {
   },
   async getAllTeacher (context, {jwt, n, p}) {
     let res = await http.get({
-      url: 'http://localhost:81/api/teacher/get',
+      url: '/api/teacher/get',
       query: {
         n,
         p
@@ -122,7 +122,7 @@ const actions = {
   },
   async getAllPaper (context, {jwt, n, p}) {
     let res = await http.get({
-      url: 'http://localhost:81/api/paper/get',
+      url: '/api/paper/get',
       query: {
         n,
         p
@@ -145,7 +145,7 @@ const actions = {
   },
   async getExportPaperList(context, {jwt, n, p}) {
     let res = await http.get({
-      url: 'http://localhost:81/api/paper/exportView',
+      url: '/api/paper/exportView',
       query: {
         n,
         p
@@ -168,7 +168,7 @@ const actions = {
   },
   async getRoot (context, {jwt, pw}) {
     let res = await http.post({
-      url: 'http://localhost:81/api/admin/root',
+      url: '/api/admin/root',
       body: {
         pw
       },

@@ -68,7 +68,7 @@ const actions = {
   async login(context, {role, id, pw}) {
     try {
       let res = await http.post({
-        url: 'http://localhost:81/api/'+role+'/login',
+        url: '/api/'+role+'/login',
         body: {
           id,
           pw
@@ -93,7 +93,7 @@ const actions = {
   async updateJwt(context, {role, jwt}) {
     try {
       let res = await http.post({
-        url: 'http://localhost:81/api/'+role+'/update',
+        url: '/api/'+role+'/update',
         header: {
           'Accept': 'application/json',
           jwt
@@ -118,7 +118,7 @@ const actions = {
   async updatePW (context, {jwt, role, id, pw}) {
     try {
       let res = await http.post({
-        url: 'http://localhost:81/api/'+role+'/changePW',
+        url: '/api/'+role+'/changePW',
         body: {id, pw},
         header: {
           'Accept': 'application/json',
@@ -144,7 +144,7 @@ const actions = {
   // 得到通知
   async getNotify (context, {jwt}) {
     let res = await http.get({
-      url: 'http://localhost:81/api/notification/get',
+      url: '/api/notification/get',
       query: {
         n: 5,
         p: 1
@@ -166,7 +166,7 @@ const actions = {
   // 推送通知
   async pullNotify (context, {jwt, body}) {
     let res = await http.post({
-      url: 'http://localhost:81/api/notification/post',
+      url: '/api/notification/post',
       body: {
         title: '通知',
         content: body
@@ -187,7 +187,7 @@ const actions = {
   },
   async truncate (context, {jwt, role}) {
     let res = await http.get({
-      url: 'http://localhost:81/api/'+role+'/truncate',
+      url: '/api/'+role+'/truncate',
       header: {
         'Accept': 'application/json',
         jwt
@@ -204,7 +204,7 @@ const actions = {
   },
   async getSwitch (context, {jwt}) {
     let res = await http.get({
-      url: 'http://localhost:81/api/switch/get',
+      url: '/api/switch/get',
       header: {
         'Accept': 'application/json',
         jwt
@@ -223,7 +223,7 @@ const actions = {
   },
   async updateSwitch (context, {jwt}) {
     let res = await http.get({
-      url: 'http://localhost:81/api/switch/update',
+      url: '/api/switch/update',
       header: {
         'Accept': 'application/json',
         jwt

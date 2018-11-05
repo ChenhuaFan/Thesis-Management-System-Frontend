@@ -64,7 +64,7 @@ const actions = {
   async getPaperForStu (context, {jwt, major, n, p}) {
     try {
       let type = await http.get({
-        url: 'http://localhost:81/api/paper/type/get',
+        url: '/api/paper/type/get',
         query: {
           'department': major
         },
@@ -78,7 +78,7 @@ const actions = {
         return false
       }
       let res = await http.get({
-        url: 'http://localhost:81/api/paper/get',
+        url: '/api/paper/get',
         query: {
           'condition': 'available',
           'type': type.body[0]['type'],
@@ -105,7 +105,7 @@ const actions = {
   async getStudentPaper (context, {jwt, stuId}) {
     try {
       let ppId = await http.get({
-        url: 'http://localhost:81/api/enroll/get',
+        url: '/api/enroll/get',
         query: {
           stuId
         },
@@ -119,7 +119,7 @@ const actions = {
         return false
       }
       let res = await http.get({
-        url: 'http://localhost:81/api/paper/get',
+        url: '/api/paper/get',
         query: {
           id: ppId.body[0]['paperId']
         },
@@ -129,7 +129,7 @@ const actions = {
         }
       })
       let tea = await http.get({
-        url: 'http://localhost:81/api/teacher/get',
+        url: '/api/teacher/get',
         query: {
           name: res.body[0]['teacher']
         },
@@ -153,7 +153,7 @@ const actions = {
   },
   async getTeaContact (context, {jwt, name}) {
     let tea = await http.get({
-      url: 'http://localhost:81/api/teacher/get',
+      url: '/api/teacher/get',
       query: {
         name
       },
@@ -170,7 +170,7 @@ const actions = {
   async getTimeLine (context, {jwt, stuId}) {
     try {
       let tl = await http.get({
-        url: 'http://localhost:81/api/timeline/get',
+        url: '/api/timeline/get',
         query: {
           stuId
         },
@@ -193,7 +193,7 @@ const actions = {
   async enroll (context, {jwt, id}) {
     try {
       let res = await http.get({
-        url: 'http://localhost:81/api/paper/enroll',
+        url: '/api/paper/enroll',
         query: {
           id
         },
@@ -216,7 +216,7 @@ const actions = {
   async cancel (context, {jwt, id}) {
     try {
       let res = await http.get({
-        url: 'http://localhost:81/api/paper/cancel',
+        url: '/api/paper/cancel',
         query: {
           id
         },

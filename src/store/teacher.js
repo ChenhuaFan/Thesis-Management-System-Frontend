@@ -49,7 +49,7 @@ const actions = {
   // API
   async getPaperForTea (context, {jwt, name, n, p}) {
     let res = await http.get({
-      url: 'http://localhost:81/api/paper/get',
+      url: '/api/paper/get',
       query: {
         teaName: name,
         n,
@@ -71,7 +71,7 @@ const actions = {
   async getCandidates (context, {jwt, id}) {
     try {
       let res = await http.get({
-        url: 'http://localhost:81/api/enroll/get',
+        url: '/api/enroll/get',
         query: {
           paperId: id
         },
@@ -88,7 +88,7 @@ const actions = {
       let workList = []
       for (let i=0, len=res.body.length; i<len; i++) {
         workList.push(http.get({
-          url: 'http://localhost:81/api/student/get',
+          url: '/api/student/get',
           query: {
             id: res.body[i]['studentId']
           },
@@ -117,7 +117,7 @@ const actions = {
   async accept (context, {jwt, id, stuId}) {
     try {
       let res = await http.get({
-        url: 'http://localhost:81/api/paper/accept',
+        url: '/api/paper/accept',
         query: {
           id,
           stuId
@@ -141,7 +141,7 @@ const actions = {
   async reject (context, {jwt, id, stuId}) {
     try {
       let res = await http.get({
-        url: 'http://localhost:81/api/paper/reject',
+        url: '/api/paper/reject',
         query: {
           id,
           stuId
@@ -165,7 +165,7 @@ const actions = {
   async backout (context, {jwt, id, stuId}) {
     try {
       let res = await http.get({
-        url: 'http://localhost:81/api/paper/backout',
+        url: '/api/paper/backout',
         query: {
           id,
           stuId
