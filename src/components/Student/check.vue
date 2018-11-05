@@ -8,7 +8,6 @@
         <h1><Icon type="md-list" /> 论文池</h1>
         <p style="padding-bottom: 24px">在此处查看并申报论文</p>
         <paper-ruler></paper-ruler>
-        <Input search enter-button placeholder="查找感兴趣的论文"/>
         <br/>
         <Table border stripe :columns="papers.cols" :data="this.paperList"></Table>
         <div style="text-align: center; padding: 24px;">
