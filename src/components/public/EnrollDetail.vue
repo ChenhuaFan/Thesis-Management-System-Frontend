@@ -33,11 +33,13 @@ export default {
     async enroll () {
       const res = await this.$store.dispatch('student/enroll', {jwt: this.jwt, id: this.curPaper.id})
       console.log(res)
-      if(res)
+      if(res) {
+        this.$router.push('/student/paper')
         this.$Notice.success({
             title: this.msg,
             duration: 5
         });
+      }
       else
         this.$Notice.error({
             title: this.msg,

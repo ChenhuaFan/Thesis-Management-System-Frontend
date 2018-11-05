@@ -27,6 +27,7 @@ export default {
     beforeRouteEnter (to, from, next) {
         next(vm => {
             vm.$store.dispatch('student/getPaperForStu', {jwt: vm.jwt, major: vm.major, n: vm.n, p: vm.p})
+            vm.$store.dispatch('student/getStudentPaper', {jwt: vm.jwt, stuId: vm.id})
         })
     },
   data () {
