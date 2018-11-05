@@ -11,7 +11,8 @@ const state = {
     'type': ''
   },
   'method': '',
-  'notify': ''
+  'notify': [],
+  'isServe': ''
 }
 
 const getters = {
@@ -56,6 +57,9 @@ const mutations = {
   // 设置当前路由方法
   setMethod (state, method) {
     state.method = method
+  },
+  setIsServe (state, value) {
+    state.isServe = value
   }
 }
 
@@ -137,9 +141,49 @@ const actions = {
   setMsg (context, msg) {
     context.commit('setMsg', msg)
   },
-  // 设置管理员通知
-  setNotify (context) {
-    context.commit('setNotify', "这里是测试哦，在路由加载时调用")
+  // 得到通知
+  async getNotify (context, {jwt}) {
+    let res = await http.get({
+      url: 'http://localhost:81/api/notification/get',
+      query: {
+        n: 5,
+        p: 1
+      },
+      header: {
+        'Accept': 'application/json',
+        jwt
+      }
+    })
+    if (res.status) {
+      context.commit('setNotify', res.body)
+      return true
+    }
+    else {
+      context.commit('setMsg', '失败'+res.body)
+      return false
+    }
+  },
+  // 推送通知
+  async pullNotify (context, {jwt, body}) {
+    let res = await http.post({
+      url: 'http://localhost:81/api/notification/post',
+      body: {
+        title: '通知',
+        content: body
+      },
+      header: {
+        'Accept': 'application/json',
+        jwt
+      }
+    })
+    if (res.status) {
+      context.commit('setMsg', '推送成功')
+      return true
+    }
+    else {
+      context.commit('setMsg', '失败'+res.body)
+      return false
+    }
   },
   async truncate (context, {jwt, role}) {
     let res = await http.get({
@@ -151,6 +195,42 @@ const actions = {
     })
     if (res.status) {
       context.commit('setMsg', '清空成功')
+      return true
+    }
+    else {
+      context.commit('setMsg', '失败'+res.body)
+      return false
+    }
+  },
+  async getSwitch (context, {jwt}) {
+    let res = await http.get({
+      url: 'http://localhost:81/api/switch/get',
+      header: {
+        'Accept': 'application/json',
+        jwt
+      }
+    })
+    if (res.status) {
+      context.commit('setIsServe', res.body==1?true:false)
+      // context.commit('setMsg', '更新成功')
+      return true
+    }
+    else {
+      // context.commit('setMsg', '失败'+res.body)
+      context.commit('setIsServe', '')
+      return false
+    }
+  },
+  async updateSwitch (context, {jwt}) {
+    let res = await http.get({
+      url: 'http://localhost:81/api/switch/update',
+      header: {
+        'Accept': 'application/json',
+        jwt
+      }
+    })
+    if (res.status) {
+      context.commit('setMsg', '更新成功')
       return true
     }
     else {

@@ -1,30 +1,29 @@
 <template>
-    <!-- <Breadcrumb :style="{margin: '24px 0'}">
-        <BreadcrumbItem to="/">
-            <Icon type="ios-home-outline"></Icon> 论文注册系统
-        </BreadcrumbItem>
-        <BreadcrumbItem to="/components/breadcrumb">
-            <Icon type="logo-buffer"></Icon> {{ this.$store.getters.getRole }}
-        </BreadcrumbItem>
-        <BreadcrumbItem>
-            <Icon type="ios-cafe"></Icon> {{ this.$store.getters.getMethod }}
-        </BreadcrumbItem>
-    </Breadcrumb> -->
-    <Alert banner closable type="info" show-icon :style="{margin: '24px 0'}">
-        来自管理员的通知
-        <span slot="desc">第一轮论文申报已经开始,请各位老师同学抓紧时间。</span>
+    <Alert v-if="isShow" banner closable type="info" show-icon :style="{margin: '24px 0'}">
+        来自 <Time :time="oneNotify.time" /> 管理员的通知
+        <span slot="desc">{{ oneNotify.title }}: {{ oneNotify.content }}</span>
     </Alert>
 </template>
 
 <script>
-  export default {
+import { mapState } from 'vuex'
+export default {
+    // beforeRouteEnter (to, from, next) {
+    //     next(vm => {
+    //     })
+    // },
+    computed: mapState({
+        oneNotify: state => state.global.notify[0],
+        jwt: state => state.global.jwt,
+        msg: state => state.global.msg,
+        isShow(state) {
+            return state.global.notify.length != 0
+        }
+    }),
     data () {
       return {
         
       }
-    },
-    computed: {
-      
     }
-  }
+}
 </script>

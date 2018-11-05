@@ -27,7 +27,15 @@
     </div>
 </template>
 <script>
-    export default {
-
-    }
+import { mapState } from 'vuex'
+export default {
+    beforeRouteEnter (to, from, next) {
+        next(vm => {
+            vm.$store.dispatch('global/getNotify', {jwt: vm.jwt})
+        })
+    },
+    computed: mapState({
+        jwt: state => state.global.jwt,
+    }),
+}
 </script>
