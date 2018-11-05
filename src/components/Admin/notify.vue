@@ -22,9 +22,9 @@
       <Col span="8">
         <Card>
           <h2>服务控制</h2>
-          <p>开启或关闭所有学生和教师的论文功能</p>
+          <p>您的更改将会在10分钟内生效</p>
           <Divider />
-          服务：<i-switch v-model="isServeData" :loading="isSwitch" @on-change="change" >
+          学生 & 教师服务：<i-switch v-model="isServeData" :loading="isSwitch" @on-change="change" >
             <span slot="open">开</span>
             <span slot="close">关</span>
           </i-switch>
