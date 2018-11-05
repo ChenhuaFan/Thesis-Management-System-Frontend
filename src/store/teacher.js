@@ -80,7 +80,6 @@ const actions = {
           jwt
         }
       })
-      console.log(res)
       if (!res.status) {
         context.commit('setCandidates', [])
         return false
@@ -100,7 +99,6 @@ const actions = {
       }
       const cads = await Promise.all(workList)
       let stuList = []
-      console.log(cads)
       for (let i=0, len=cads.length; i<len; i++) {
         if (cads[i].status)
           stuList.push(cads[i].body[0])

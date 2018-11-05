@@ -46,10 +46,9 @@
 import { mapState } from 'vuex'
 export default {
     beforeRouteEnter (to, from, next) {
-        next(vm => {
+        next(async vm => {
             // todo: 此处需要修改应该是 actions 获取数据。
-            //   vm.$store.dispatch('initPage', vm.$store.getters.getStudentPaper.body)
-            vm.$store.dispatch('teacher/getPaperForTea', {jwt: vm.jwt, name: vm.name, n: vm.n, p: vm.p})
+            await vm.$store.dispatch('teacher/getPaperForTea', {jwt: vm.jwt, name: vm.name, n: vm.n, p: vm.p})
         })
     },
     data () {
@@ -145,8 +144,8 @@ export default {
                                         marginRight: '5px'
                                     },
                                     on: {
-                                        click: () => {
-                                            this.accept(params.row.id)
+                                        click: async () => {
+                                            await this.accept(params.row.id)
                                         }
                                     }
                                 }, [
@@ -233,11 +232,14 @@ export default {
         },
         async accept (stuId) {
             const res = await this.$store.dispatch('teacher/accept', {jwt: this.jwt, id: this.curPaper.id, stuId})
-            if(res)
+            if(res) {
+                await this.$store.dispatch('teacher/getPaperForTea', {jwt: this.jwt, name: this.name, n: this.n, p: this.p})
+                this.isShow = false
                 this.$Notice.success({
                     title: this.msg,
                     duration: 5
                 });
+            }
             else
                 this.$Notice.error({
                     title: this.msg,
@@ -246,11 +248,14 @@ export default {
         },
         async reject (stuId) {
             const res = await this.$store.dispatch('teacher/reject', {jwt: this.jwt, id: this.curPaper.id, stuId})
-            if(res)
+            if(res) {
+                await this.$store.dispatch('teacher/getPaperForTea', {jwt: this.jwt, name: this.name, n: this.n, p: this.p})
+                this.isShow = false
                 this.$Notice.success({
                     title: this.msg,
                     duration: 5
                 });
+            }
             else
                 this.$Notice.error({
                     title: this.msg,
@@ -259,11 +264,14 @@ export default {
         },
         async backout (stuId) {
             const res = await this.$store.dispatch('teacher/backout', {jwt: this.jwt, id: this.curPaper.id, stuId})
-            if(res)
+            if(res) {
+                await this.$store.dispatch('teacher/getPaperForTea', {jwt: this.jwt, name: this.name, n: this.n, p: this.p})
+                this.isShow = false
                 this.$Notice.success({
                     title: this.msg,
                     duration: 5
                 });
+            }
             else
                 this.$Notice.error({
                     title: this.msg,
