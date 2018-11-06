@@ -32,7 +32,6 @@ export default {
   methods: {
     async enroll () {
       const res = await this.$store.dispatch('student/enroll', {jwt: this.jwt, id: this.curPaper.id})
-      console.log(res)
       if(res) {
         this.$router.push('/student/paper')
         this.$Notice.success({

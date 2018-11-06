@@ -125,7 +125,6 @@ const actions = {
           jwt
         }
       })
-      console.log(res)
       if (res.status) {
         context.commit('resetAll')
         return true

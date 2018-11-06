@@ -184,7 +184,6 @@ const actions = {
       }
     })
     if (res.status) {
-      console.log(res)
       context.commit('global/setUser', res.token, {root: true})
       context.commit('global/setMsg', '变更成功', {root: true})
       return true
