@@ -23,6 +23,8 @@ const post = function (config) {
 }
 
 const get = function (config) {
+  if (config.query)
+    config.query['t'] = new Date().getTime();
   return new Promise((resolve, reject) => {
     request
       .get(config.url ? config.url : '')
