@@ -57,7 +57,7 @@ methods: {
                     jwt: this.jwt,
                     id: this.id,
                     pw: this.formInline.repw,
-                    role: this.role,
+                    role: this.role=='root'?'admin':this.role,
                 })
                 if (res) {
                     this.$Message.success('更改成功，请重新登录。')
