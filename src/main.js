@@ -6,7 +6,8 @@ import Routers from './router.js';
 import iView from 'iview';
 import store from './store';
 import 'iview/dist/styles/iview.css';
-import request from 'superagent'
+import request from 'superagent';
+import '@babel/polyfill'
 
 // 挂载 request
 Vue.prototype.$http = request;
