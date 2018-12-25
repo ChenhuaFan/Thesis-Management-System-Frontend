@@ -1,24 +1,51 @@
-import check from '../components/Student/check.vue'
-import home from '../components/Student/default.vue'
-import paper from '../components/Student/paper.vue'
-import profile from '../components/Student/profile.vue'
+import defaultPage from '../components/Admin/default.vue'
+import stuMag from '../components/Admin/stuManage.vue'
+import stuView from '../components/Admin/stuView.vue'
+import ppMag from '../components/Admin/paperManage.vue'
+import ppView from '../components/Admin/paperView.vue'
+import teaMag from '../components/Admin/teaManage.vue'
+import teaView from '../components/Admin/teaView.vue'
+import profile from '../components/Admin/profile.vue'
+import notify from '../components/Admin/notify.vue'
+
+import basic from '../views/Basic.vue'
 
 const admin = {
   path: '/admin',
-  component: () => import('../views/Basic.vue'),
+  component: basic,
   children: [
     {
       path: '',
-      name: 'student',
-      component: home
+      name: 'admin',
+      component: defaultPage
     },
     {
-      path: 'check',
-      component: check
+      path: 'stuMag',
+      component: stuMag
     },
     {
-      path: 'paper',
-      component: paper
+      path: 'stuView',
+      component: stuView
+    },
+    {
+      path: 'teaMag',
+      component: teaMag
+    },
+    {
+      path: 'teaView',
+      component: teaView
+    },
+    {
+      path: 'ppMag',
+      component: ppMag
+    },
+    {
+      path: 'ppView',
+      component: ppView
+    },
+    {
+      path: 'notify',
+      component: notify
     },
     {
       path: 'profile',
@@ -27,4 +54,4 @@ const admin = {
   ]
 }
 
-export default student
+export default admin

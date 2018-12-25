@@ -19,6 +19,7 @@
                 </Sider>
                 <Layout :style="{padding: '0 24px 24px'}">
                     <my-breadcrumb></my-breadcrumb>
+                    <br>
                     <router-view></router-view>
                 </Layout>
             </Layout>
@@ -26,12 +27,15 @@
     </div>
 </template>
 <script>
-    export default {
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                // todo: 此处需要修改应该是 actions 获取数据。
-                vm.$store.dispatch('getPaperOfStudent')
-            })
-        },
-    }
+import { mapState } from 'vuex'
+export default {
+    beforeRouteEnter (to, from, next) {
+        next(vm => {
+            vm.$store.dispatch('global/getNotify', {jwt: vm.jwt})
+        })
+    },
+    computed: mapState({
+        jwt: state => state.global.jwt,
+    }),
+}
 </script>

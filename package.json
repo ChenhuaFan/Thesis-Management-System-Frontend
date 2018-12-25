@@ -1,6 +1,6 @@
 {
-  "name": "paperRegisterWeb2",
-  "version": "0.1.0",
+  "name": "paperSystem",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -19,6 +19,7 @@
     "@vue/cli-plugin-babel": "^3.0.0",
     "@vue/cli-plugin-eslint": "^3.0.0",
     "@vue/cli-service": "^3.0.0",
+    "babel-polyfill": "^6.26.0",
     "mock": "^0.1.1",
     "vue-template-compiler": "^2.5.17"
   },

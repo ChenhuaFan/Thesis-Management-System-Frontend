@@ -26,11 +26,12 @@
               <p slot="title"><Icon type="md-paper" /> 我的论文</p>
               <!-- 模块 my-paper 尚未抽离出来 -->
               <!-- 根据学生是否有论文来决定是否显示 -->
-              <my-mask v-if="isShow"></my-mask>
-              <div class="mypaper" v-if="!isShow">
+              <my-mask v-if="!isShow"></my-mask>
+              <div class="mypaper" v-if="isShow">
                 <paper-info></paper-info>
                 <div class="controlBtnsGroup">
-                    <Button size="large" type="error" long>取消申报</Button>
+                    <Button v-if="isCancelable" size="large" type="error" long @click="cancel()">取消申报</Button>
+                    <Alert v-if="!isCancelable" type="warning" show-icon>只有当论文处于可申报状态时，您才可以取消您的申请。</Alert>
                 </div>
               </div>
               <!-- 模块 my-paper 尚未抽离出来 -->
@@ -42,12 +43,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      // todo: 此处需要修改应该是 actions 获取数据。
-      vm.$store.dispatch('getPaperOfStudent')
-      vm.$store.dispatch('getTimeLine')
+      vm.$store.dispatch('student/getTimeLine', {jwt: vm.jwt, stuId: vm.id})
+      vm.$store.dispatch('student/getStudentPaper', {jwt: vm.jwt, stuId: vm.id})
+      vm.$store.dispatch('student/setCurPaper', vm.myPaper)
     })
   },
   data() {
@@ -61,9 +63,34 @@ export default {
       }
     }
   },
-  computed: {
+  computed: mapState({
+    myPaper: state => state.student.myPaper,
+    curPaper: state => state.student.curPaper,
+    jwt: state => state.global.jwt,
+    id: state => state.global.user.id,
+    msg: state => state.global.msg,
     isShow() {
-      return this.$store.getters.getStudentPaper.mask
+      return JSON.stringify(this.myPaper) != "{}"
+    },
+    isCancelable() {
+      return this.myPaper.condition == 'available'
+    }
+  }),
+  methods: {
+    async cancel () {
+      const res = await this.$store.dispatch('student/cancel', {jwt: this.jwt, id: this.curPaper.id})
+      if(res) {
+        this.$store.dispatch('student/getStudentPaper', {jwt: this.jwt, stuId: this.id})
+        this.$Notice.success({
+            title: this.msg,
+            duration: 5
+        });
+      }
+      else
+        this.$Notice.error({
+            title: this.msg,
+            duration: 5
+        });
     }
   }
 }

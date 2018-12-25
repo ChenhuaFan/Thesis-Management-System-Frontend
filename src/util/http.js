@@ -23,10 +23,12 @@ const post = function (config) {
 }
 
 const get = function (config) {
+  let query = config.query ? config.query : {}
+  query['t'] = new Date().getTime();
   return new Promise((resolve, reject) => {
     request
       .get(config.url ? config.url : '')
-      .query(config.query ? config.query : {})
+      .query(query)
       .set(config.header ? config.header : defaultConfig.header)
       .end((err, res) => {
         if(err) {

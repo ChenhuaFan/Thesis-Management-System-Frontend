@@ -9,25 +9,24 @@
 
 <template>
         <div class="paper-info">
-            <p :style="pStyle"><Icon type="md-arrow-round-forward" />《{{ this.$store.getters.getPaper.title }}》</p>
+            <p :style="pStyle"><Icon type="md-arrow-round-forward" />《{{ curPaper.title }}》</p>
             <br />
             <div class="demo-drawer-profile">
                 <Row>
                     <Col span="24">
-                        <Steps :current="1">
+                        <Steps :current="step">
                             <Step title="录入论文池"></Step>
                             <Step title="接受报名"></Step>
-                            <Step title="申请人评审"></Step>
                             <Step title="确定"></Step>
                         </Steps>
                     </Col>
                 </Row>
                 <Row>
                     <Col span="12">
-                        指导教师: {{ this.$store.getters.getPaper.teacher }}
+                        指导教师: {{ curPaper.teacher }}
                     </Col>
                     <Col span="12">
-                        当前已选: {{ this.$store.getters.getPaper.checked }} / 3
+                        当前已选: {{ curPaper.checked }} / 3
                     </Col>
                 </Row>
             </div>
@@ -45,19 +44,15 @@
             <div class="demo-drawer-profile">
                 <Row>
                     <Col span="12">
-                        电话号码: {{ this.$store.getters.getTeacher.contact }}
+                        电话号码: {{ teaContact }}
                     </Col>
                 </Row>
-                <!-- <Row>
-                    <Col span="12">
-                        GitHub: <a href="https://github.com/iview/iview" target="_blank">https://github.com/iview/iview</a>
-                    </Col>
-                </Row> -->
             </div>
             <Divider />
         </div>
 </template>
 <script>
+import { mapState } from 'vuex'
     export default {
         data () {
             return {
@@ -70,12 +65,17 @@
                 }
             }
         },
-        computed: {
-            isShow () {
-                // console.log(this.$store.getters.getPaper.id)
-                return this.$store.getters.getPaper.id == undefined
+        computed: mapState({
+            curPaper: state => state.student.curPaper,
+            teaContact: state => state.student.teaContact,
+            step() {
+                if (this.curPaper.condition == 'available') {
+                    return 1
+                } else {
+                    return 3
+                }
             }
-        }
+        })
     }
 </script>
 

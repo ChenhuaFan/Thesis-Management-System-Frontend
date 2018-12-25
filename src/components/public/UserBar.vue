@@ -36,7 +36,11 @@
         </MenuItem>
         <MenuItem name="2">
             <Icon type="md-person"></Icon>
-            您好，{{ this.$store.getters.getName }}
+            您好，{{ name }}
+        </MenuItem>
+        <MenuItem name="logout">
+            <Icon type="md-log-out" />
+            登出
         </MenuItem>
     </div>
     <Modal
@@ -50,16 +54,26 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
     data() {
         return {
             isShow: false
         }
     },
+    computed: mapState({
+        name: state => state.global.user.name
+    }),
     methods: {
         show(name) {
             if (name == 'help')
                 this.isShow = true
+            if (name == 'logout') {
+                window.sessionStorage.clear()
+                this.$router.push('login')
+                this.$store.dispatch('global/reset')
+                this.$store.dispatch('global/setMsg', '您已成功退出.')
+            }
         }
     }
 }

@@ -4,6 +4,7 @@
 import login from './router/login'
 import student from './router/student'
 import teacher from './router/teacher'
+import admin from './router/admin'
 
 //test
 // import Login from './views/Login.vue';
@@ -17,5 +18,6 @@ export default [
     },
     login,
     student,
-    teacher
+    teacher,
+    admin
 ]

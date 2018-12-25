@@ -6,7 +6,8 @@ import Routers from './router.js';
 import iView from 'iview';
 import store from './store';
 import 'iview/dist/styles/iview.css';
-import request from 'superagent'
+import request from 'superagent';
+import '@babel/polyfill'
 
 // 挂载 request
 Vue.prototype.$http = request;
@@ -26,6 +27,8 @@ import MyNotification from '@/components/public/Notification.vue'
 import MyTimeLine from '@/components/public/MyTimeLine.vue'
 import Mask from '@/components/public/Mask.vue'
 import EnrollDetail from '@/components/public/EnrollDetail.vue'
+import GetRoot from '@/components/public/GetRoot.vue'
+import ChangePW from '@/components/public/ChangePW.vue'
 Vue.component('my-nav', MyNav)
 Vue.component('user-bar', UserBar)
 Vue.component('my-breadcrumb', BreadCrumb)
@@ -36,6 +39,8 @@ Vue.component('my-notification', MyNotification)
 Vue.component('my-timeline', MyTimeLine)
 Vue.component('my-mask', Mask) //EnrollDetail
 Vue.component('enroll-detail', EnrollDetail)
+Vue.component('get-root', GetRoot)
+Vue.component('change-pw', ChangePW)
 
 // 路由配置
 const RouterConfig = {
@@ -68,28 +73,20 @@ router.beforeEach(async (to, from, next) => {
   // jwt 不存在, 未登录情况(1)
   if (jwt === null) {
     next('login')
-    store.commit('setMsg', 'OOPs! 看起来您还没登录过')
+    store.dispatch('global/setMsg', 'OOPs! 看起来您还没登录过')
     return
   }
   // jwt 是否更新成功 ? 已登录 : 未登录
-  const res = await store.dispatch('updateJwt', jwt)
+  const res = await store.dispatch('global/updateJwt', {role: urlRole, jwt})
   if (!res) {
     // 更新失败: jwt 过期，未登录情况(2)
+    store.dispatch('global/setMsg', '您的操作不合法')
     next('login')
     return
   }
-  // 更新成功，检查请求的目标页行为是否合法
-  if(store.getters.getRole !== urlRole) {
-    alert(store.getters.getRole + " " + urlRole)
-    // 转跳到登录页 并发送错误信息
-    next('login') //'您的操作不合法'
-    store.commit('setMsg', '您的操作不合法')
-    return
-  }
   // 所有操作合法 设置当前的用户动作 并重置错误信息
-  store.commit('setCurrent', urlMethod)
-  store.commit('setMsg', '')
-  store.dispatch('getEnrollPaperId')
+  store.dispatch('global/setMethod', urlMethod)
+  store.dispatch('global/setMsg', '')
   next()
 })
 
